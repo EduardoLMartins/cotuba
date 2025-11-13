@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.MediaType;
+import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;
+import nl.siegmann.epublib.service.MediatypeService;
 
 /*
  *  * Classe criada apartir da pagina 34 para unificação de toda utilização dos pacote restantes e principalmente do pacote nl.siegmann.epublib
@@ -23,6 +26,7 @@ public class GeradorEPUB {
 			String html = capitulo.getConteudoHTML();
 			
 			String titulodoCapitulo = capitulo.getTitulo();
+			epub.addSection(titulodoCapitulo, new Resource(html.getBytes(), MediatypeService.XHTML));
 			
 		}
 		

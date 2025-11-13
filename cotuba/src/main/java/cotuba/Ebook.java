@@ -12,6 +12,15 @@ public class Ebook {
 	private List<Capitulo> capitulos;
 	
 	
+	public boolean isUltimoCapitulo(Capitulo capitulo) {
+		
+		if ( capitulo == null || capitulos == null || capitulos.isEmpty()) {
+			
+			return false;
+		}
+		
+		return this.capitulos.get(this.capitulos.size() - 1).equals(capitulo);
+	}
 	
 	
 	

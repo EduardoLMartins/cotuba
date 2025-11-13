@@ -34,8 +34,12 @@ public class GeradorPDF {
 				for(IElement element : convertElements) {
 					pdfDocument.add((IBlockElement) element);
 				}
-				// TODO: NAO ADICIONAR PAGINA DEPOIS DO ULTIMO CAPITULO
+				
+				if(!ebook.isUltimoCapitulo(capitulo)) {
+					
+				
 				pdfDocument.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+				}
 			}
 			
 		} catch (Exception ex) {
