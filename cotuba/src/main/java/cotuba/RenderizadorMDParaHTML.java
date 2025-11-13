@@ -29,6 +29,9 @@ public class RenderizadorMDParaHTML {
 		PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**/*.md");
 
 		try (Stream<Path> arquivosMD = Files.walk(diretorioDosMD)) {
+			
+			// TODO: voltar a pagina 56 para ajustar essa classe como exercicio extra
+			
 			arquivosMD.filter(Files::isRegularFile).filter(p -> {
 				boolean match = matcher.matches(p.toAbsolutePath().normalize());
 				return match;
