@@ -1,7 +1,13 @@
-package cotuba;
+package cotuba.application;
 
 import java.nio.file.Path;
 import java.util.List;
+
+import cotuba.domain.Capitulo;
+import cotuba.domain.Ebook;
+import cotuba.epub.GeradorEPUB;
+import cotuba.md.RenderizadorMDParaHTML;
+import cotuba.pdf.GeradorPDF;
 
 /*
  * Classe criada a partir da página 61 eguindo o padrão MVC.
