@@ -100,6 +100,9 @@ public class LeitorOpcoesCLI {
 	 }
 	}
 
+	
+	// getters e setters
+	
 	public Path getDiretorioDosMD() {
 		return diretorioDosMD;
 	}
