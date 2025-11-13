@@ -24,7 +24,7 @@ public class LeitorOpcoesCLI {
 	private Path arquivoDeSaida;
 	private boolean modoVerboso = false;
 
-	public LeitorOpcoesCLI(String[] args) {
+	LeitorOpcoesCLI(String[] args) {
 		
 		 var options = new Options();
 
