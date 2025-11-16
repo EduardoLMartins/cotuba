@@ -3,11 +3,9 @@ package cotuba.application;
 import java.nio.file.Path;
 import java.util.List;
 
+import cotuba.cli.LeitorOpcoesCLI;
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
-import cotuba.epub.GeradorDeEPUB;
-import cotuba.md.RenderizadorMDParaHTML;
-import cotuba.pdf.GeradorDePDF;
 
 /*
  * Classe criada a partir da página 61 eguindo o padrão MVC.
@@ -21,7 +19,12 @@ import cotuba.pdf.GeradorDePDF;
 
 public class Cotuba {
 
-	public void executa(String formato, Path diretorioDosMD, Path arquivoDeSaida) {
+	public void executa(LeitorOpcoesCLI parametros) {
+		
+		String formato = parametros.getFormato();
+		Path diretorioDosMD = parametros.getDiretorioDosMD();
+		Path arquivoDeSaida = parametros.getArquivoDeSaida();
+		
 		RenderizadorMDParaHTML renderizador = RenderizadorMDParaHTML.cria();
 		List<Capitulo> capitulos = renderizador.renderiza(diretorioDosMD);
 		

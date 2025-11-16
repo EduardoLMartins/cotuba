@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import cotuba.application.GeradorDeEPUB;
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
 import nl.siegmann.epublib.domain.Book;
-import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;
 import nl.siegmann.epublib.service.MediatypeService;
@@ -17,7 +17,7 @@ import nl.siegmann.epublib.service.MediatypeService;
  *  que faz a criação dos epubs
  *  seguindo o SRP - Single Responsability Principle
  */
-public class GeradorEPUBImpl implements GeradorDeEPUB {
+public class GeradorEPUBComEpublib implements GeradorDeEPUB {
 
 	@Override
 	public void gera(Ebook ebook) {

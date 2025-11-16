@@ -1,12 +1,13 @@
-package cotuba.pdf;
+package cotuba.application;
 
 import cotuba.domain.Ebook;
+import cotuba.pdf.GeradorPDFIText;
 
 public interface GeradorDePDF {
 
 	void gera(Ebook ebook);
 
 	static GeradorDePDF cria() {
-		return new GeradorPDFImpl();
+		return new GeradorPDFIText();
 	}
 }
