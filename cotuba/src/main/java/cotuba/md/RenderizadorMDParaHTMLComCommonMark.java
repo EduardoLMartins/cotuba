@@ -14,6 +14,7 @@ import org.commonmark.node.Node;
 import org.commonmark.node.Text;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.springframework.stereotype.Component;
 
 import cotuba.application.RenderizadorMDParaHTML;
 import cotuba.domain.Capitulo;
@@ -22,6 +23,8 @@ import cotuba.domain.Capitulo;
  * Classe criada apartir da pagina 40 seguindo SRP - Simple Responsability Principle 
  *  deixando assim para essa classe a a Renderização de MD para HTML
  */
+
+@Component
 public class RenderizadorMDParaHTMLComCommonMark implements  RenderizadorMDParaHTML {
 
 	@Override

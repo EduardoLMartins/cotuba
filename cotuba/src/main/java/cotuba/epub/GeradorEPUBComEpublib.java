@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.stereotype.Component;
+
 import cotuba.application.GeradorDeEPUB;
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
@@ -17,6 +19,8 @@ import nl.siegmann.epublib.service.MediatypeService;
  *  que faz a criação dos epubs
  *  seguindo o SRP - Single Responsability Principle
  */
+
+@Component
 public class GeradorEPUBComEpublib implements GeradorDeEPUB {
 
 	@Override

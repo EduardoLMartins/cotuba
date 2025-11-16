@@ -4,6 +4,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -22,6 +24,8 @@ import cotuba.domain.Ebook;
  *  seguindo o SRP - Single Responsability Principle
  *
  */
+
+@Component
 public class GeradorPDFIText implements GeradorDePDF {
 
 	@Override
