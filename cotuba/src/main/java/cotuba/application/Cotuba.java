@@ -5,9 +5,9 @@ import java.util.List;
 
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
-import cotuba.epub.GeradorEPUB;
+import cotuba.epub.GeradorDeEPUB;
 import cotuba.md.RenderizadorMDParaHTML;
-import cotuba.pdf.GeradorPDF;
+import cotuba.pdf.GeradorDePDF;
 
 /*
  * Classe criada a partir da página 61 eguindo o padrão MVC.
@@ -22,7 +22,7 @@ import cotuba.pdf.GeradorPDF;
 public class Cotuba {
 
 	public void executa(String formato, Path diretorioDosMD, Path arquivoDeSaida) {
-		var renderizador = new RenderizadorMDParaHTML();
+		RenderizadorMDParaHTML renderizador = RenderizadorMDParaHTML.cria();
 		List<Capitulo> capitulos = renderizador.renderiza(diretorioDosMD);
 		
 		Ebook ebook = new Ebook();
@@ -34,11 +34,11 @@ public class Cotuba {
 		
 		if ("pdf".equals(formato)) {
 			
-			var geradorPDF = new GeradorPDF();
+			GeradorDePDF geradorPDF = GeradorDePDF.cria();
 			geradorPDF.gera(ebook);
 
 		} else if ("epub".equals(formato)) {
-			var geradorEPUB = new GeradorEPUB();
+			GeradorDeEPUB geradorEPUB = GeradorDeEPUB.cria();
 			geradorEPUB.gera(ebook);
 			
 		} else {

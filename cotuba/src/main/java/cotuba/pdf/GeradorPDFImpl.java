@@ -21,8 +21,9 @@ import cotuba.domain.Ebook;
  *  seguindo o SRP - Single Responsability Principle
  *
  */
-public class GeradorPDF {
+public class GeradorPDFImpl implements GeradorDePDF {
 
+	@Override
 	public void gera(Ebook ebook) {
 
 		Path arquivoDeSaida = ebook.getArquivoDeSaida();

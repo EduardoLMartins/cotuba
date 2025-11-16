@@ -17,8 +17,9 @@ import nl.siegmann.epublib.service.MediatypeService;
  *  que faz a criação dos epubs
  *  seguindo o SRP - Single Responsability Principle
  */
-public class GeradorEPUB {
+public class GeradorEPUBImpl implements GeradorDeEPUB {
 
+	@Override
 	public void gera(Ebook ebook) {
 
 		Path arquivoDeSaida = ebook.getArquivoDeSaida();
