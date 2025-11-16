@@ -3,6 +3,7 @@ package cotuba.cli;
 import java.nio.file.Path;
 
 import cotuba.application.Cotuba;
+import cotuba.application.ParametrosCotuba;
 
 public class Main {
 
@@ -11,7 +12,7 @@ public class Main {
 		Path arquivoDeSaida;
 		boolean modoVerboso = false;
 		try {
-			var opcoesCLI = new LeitorOpcoesCLI(args);
+			ParametrosCotuba opcoesCLI = new LeitorOpcoesCLI(args);
 			arquivoDeSaida = opcoesCLI.getArquivoDeSaida();
 			modoVerboso = opcoesCLI.isModoVerboso();
 
