@@ -36,7 +36,6 @@ public class LeitorOpcoesCLI {
 		trataArquivoDeSaida(cmd);
 		trataModoVerboso(cmd);
 	}
-
 	private Options criarOpcoes() {
 		var options = new Options();
 
