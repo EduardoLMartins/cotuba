@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.springframework.stereotype.Component;
+
+import cotuba.application.GeradorEbook;
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
 import nl.siegmann.epublib.domain.Book;
-import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Resource;
 import nl.siegmann.epublib.epub.EpubWriter;
 import nl.siegmann.epublib.service.MediatypeService;
@@ -17,8 +19,11 @@ import nl.siegmann.epublib.service.MediatypeService;
  *  que faz a criação dos epubs
  *  seguindo o SRP - Single Responsability Principle
  */
-public class GeradorEPUB {
 
+@Component
+public class GeradorEPUB implements GeradorEbook {
+
+	@Override
 	public void gera(Ebook ebook) {
 
 		Path arquivoDeSaida = ebook.getArquivoDeSaida();

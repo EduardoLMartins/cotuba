@@ -5,7 +5,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,6 +14,7 @@ import org.commonmark.node.Node;
 import org.commonmark.node.Text;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.springframework.stereotype.Component;
 
 import cotuba.domain.Capitulo;
 
@@ -22,6 +22,8 @@ import cotuba.domain.Capitulo;
  * Classe criada apartir da pagina 40 seguindo SRP - Simple Responsability Principle 
  *  deixando assim para essa classe a a Renderização de MD para HTML
  */
+
+@Component
 public class RenderizadorMDParaHTML {
 
 	public List<Capitulo> renderiza(Path diretorioDosMD) {

@@ -4,6 +4,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -13,6 +15,7 @@ import com.itextpdf.layout.element.IBlockElement;
 import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.property.AreaBreakType;
 
+import cotuba.application.GeradorEbook;
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
 
@@ -21,8 +24,11 @@ import cotuba.domain.Ebook;
  *  seguindo o SRP - Single Responsability Principle
  *
  */
-public class GeradorPDF {
 
+@Component
+public class GeradorPDF implements GeradorEbook {
+
+	@Override
 	public void gera(Ebook ebook) {
 
 		Path arquivoDeSaida = ebook.getArquivoDeSaida();
