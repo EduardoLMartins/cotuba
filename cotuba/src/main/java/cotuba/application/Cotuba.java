@@ -7,8 +7,7 @@ import org.springframework.stereotype.Component;
 
 import cotuba.domain.Capitulo;
 import cotuba.domain.Ebook;
-import cotuba.epub.GeradorEPUB;
-import cotuba.pdf.GeradorPDF;
+import cotuba.md.RenderizadorMDParaHTML;
 
 @Component
 public class Cotuba {
@@ -18,8 +17,7 @@ public class Cotuba {
 		String formato = parametros.getFormato();
 		Path diretorioDosMD = parametros.getDiretorioDosMD();
 		Path arquivoDeSaida = parametros.getArquivoDeSaida();
-		GeradorEbook gerador;
-		RenderizadorMDParaHTML renderizador = RenderizadorMDParaHTML.cria();
+		var renderizador = new RenderizadorMDParaHTML();
 		List<Capitulo> capitulos = renderizador.renderiza(diretorioDosMD);
 
 		Ebook ebook = new Ebook();
@@ -27,20 +25,8 @@ public class Cotuba {
 		ebook.setArquivoDeSaida(arquivoDeSaida);
 		ebook.setCapitulos(capitulos);
 
-		if ("pdf".equals(formato)) {
-
-			gerador = new GeradorPDF();
-
-		} else if ("epub".equals(formato)) {
-
-			gerador = new GeradorEPUB();
-
-		} else {
-
-			throw new RuntimeException("Formato do ebook inválido: " + formato);
-
-		}
-
+		GeradorEbook gerador= GeradorEbook.cria(formato);
+		
 		gerador.gera(ebook);
 	}
 
