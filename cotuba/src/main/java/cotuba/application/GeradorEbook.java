@@ -1,6 +1,10 @@
 package cotuba.application;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cotuba.domain.Ebook;
+import cotuba.domain.FormatoEbook;
 /*
  * Classse criada para Generalizar ainda mais as classes geradorPDF e geradorEPUB 
  * fazendo assim um acoplamento melhor para novas funcionalidades ao gerar Ebooks
@@ -11,25 +15,14 @@ import cotuba.pdf.GeradorPDF;
 
 public interface GeradorEbook {
 
+	Map<String, GeradorEbook> GERADORES = new HashMap<String, GeradorEbook>() {{
+		put("pdf", new GeradorPDF());
+		put("epub", new GeradorEPUB());
+	}};
+	
 	void gera(Ebook ebook);
 
-	static GeradorEbook cria(String formato) {
-		GeradorEbook gerador;
-
-		if ("pdf".equals(formato)) {
-
-			gerador = new GeradorPDF();
-
-		} else if ("epub".equals(formato)) {
-
-			gerador = new GeradorEPUB();
-
-		} else {
-
-			throw new RuntimeException("Formato do ebook inválido: " + formato);
-
-		}
-
-		return gerador;
+	static GeradorEbook cria(FormatoEbook formato) {
+		return formato.getGeradorEbook();
 	};
 }

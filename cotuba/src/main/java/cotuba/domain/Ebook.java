@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Ebook {
 	
-	private String formato;
+	private FormatoEbook formato;
 	
 	private Path arquivoDeSaida;
 	
@@ -27,11 +27,11 @@ public class Ebook {
 	
 	// getters e setters
 	
-	public String getFormato() {
+	public FormatoEbook getFormato() {
 		return formato;
 	}
 
-	public void setFormato(String formato) {
+	public void setFormato(FormatoEbook formato) {
 		this.formato = formato;
 	}
 
