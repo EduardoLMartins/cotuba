@@ -1,37 +1,40 @@
 package cotuba.cli;
 
-import java.nio.file.Path;
-
+import cotuba.CotubaConfig;
+import cotuba.application.Cotuba;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import cotuba.CotubaConfig;
-import cotuba.application.Cotuba;
-import cotuba.application.ParametrosCotuba;
+import java.nio.file.Path;
 
 public class Main {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		Path arquivoDeSaida;
-		boolean modoVerboso = false;
-		try {
-			ParametrosCotuba opcoesCLI = new LeitorOpcoesCLI(args);
-			arquivoDeSaida = opcoesCLI.getArquivoDeSaida();
-			modoVerboso = opcoesCLI.isModoVerboso();
+    Path arquivoDeSaida;
+    boolean modoVerboso = false;
 
-			ApplicationContext applicationContext = new AnnotationConfigApplicationContext(CotubaConfig.class);
-			Cotuba cotuba = applicationContext.getBean(Cotuba.class);
-			cotuba.executa(opcoesCLI);
+    try {
 
-			System.out.println("Arquivo gerado com sucesso: " + arquivoDeSaida);
+      LeitorOpcoesCLI opcoesCLI = new LeitorOpcoesCLI(args);
 
-		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
-			if (modoVerboso) {
-				ex.printStackTrace();
-			}
-			System.exit(1);
-		}
-	}
+      arquivoDeSaida = opcoesCLI.getArquivoDeSaida();
+      modoVerboso = opcoesCLI.isModoVerboso();
+
+      ApplicationContext applicationContext = new AnnotationConfigApplicationContext(CotubaConfig.class);
+      Cotuba cotuba = applicationContext.getBean(Cotuba.class);
+
+      cotuba.executa(opcoesCLI);
+
+      System.out.println("Arquivo gerado com sucesso: " + arquivoDeSaida);
+
+    } catch (Exception ex) {
+      System.err.println(ex.getMessage());
+      if (modoVerboso) {
+        ex.printStackTrace();
+      }
+      System.exit(1);
+    }
+  }
+
 }
