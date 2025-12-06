@@ -1,5 +1,9 @@
 package cotuba.cli;
 
+import cotuba.application.ParametrosCotuba;
+import cotuba.domain.FormatoEbook;
+import org.apache.commons.cli.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,149 +11,118 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+class LeitorOpcoesCLI implements ParametrosCotuba {
 
-import cotuba.application.ParametrosCotuba;
+  private Path diretorioDosMD;
+  private FormatoEbook formato;
+  private Path arquivoDeSaida;
+  private boolean modoVerboso = false;
 
- class LeitorOpcoesCLI implements ParametrosCotuba {
+  public LeitorOpcoesCLI(String[] args) {
 
-	// cotuba.LeitorOpcoesCLI
-	private Path diretorioDosMD;
-	private String formato;
-	private Path arquivoDeSaida;
-	private boolean modoVerboso = false;
+    Options options = criaOpcoes();
+    CommandLine cmd = parseDosArgumentos(args, options);
+    trataDiretorioDosMD(cmd);
+    trataFormato(cmd);
+    trataArquivoDeSaida(cmd);
+    trataModoVerboso(cmd);
 
-	/*
-	 * Este construtor nao precisa ser publico pois só é utilizado dentro do pacote
-	 * cli sendo assim deixando ele com protect Nao a como reutilizado de forma
-	 * indevida em outras classes
-	 */
-	LeitorOpcoesCLI(String[] args) {
-		Options options = criarOpcoes();
-		CommandLine cmd = parseDosArgumentos(args, options);
-		trataDiretoriosDosMD(cmd);
-		trataFormato(cmd);
-		trataArquivoDeSaida(cmd);
-		trataModoVerboso(cmd);
-	}
-	private Options criarOpcoes() {
-		var options = new Options();
+  }
 
-		var opcaoDeDiretorioDosMD = new Option("d", "dir", true,
-				"Diretório que contém os arquivos md. Default: diretório atual.");
-		options.addOption(opcaoDeDiretorioDosMD);
+  private Options criaOpcoes() {
+    var options = new Options();
 
-		var opcaoDeFormatoDoEbook = new Option("f", "format", true,
-				"Formato de saída do ebook. Pode ser: pdf ou epub. Default: pdf");
-		options.addOption(opcaoDeFormatoDoEbook);
+    var opcaoDeDiretorioDosMD = new Option("d", "dir", true,
+        "Diretório que contém os arquivos md. Default: diretório atual.");
+    options.addOption(opcaoDeDiretorioDosMD);
 
-		var opcaoDeArquivoDeSaida = new Option("o", "output", true,
-				"Arquivo de saída do ebook. Default: book.{formato}.");
-		options.addOption(opcaoDeArquivoDeSaida);
+    var opcaoDeFormatoDoEbook = new Option("f", "format", true,
+        "Formato de saída do ebook. Pode ser: pdf ou epub. Default: pdf");
+    options.addOption(opcaoDeFormatoDoEbook);
 
-		var opcaoModoVerboso = new Option("v", "verbose", false, "Habilita modo verboso.");
-		options.addOption(opcaoModoVerboso);
+    var opcaoDeArquivoDeSaida = new Option("o", "output", true,
+        "Arquivo de saída do ebook. Default: book.{formato}.");
+    options.addOption(opcaoDeArquivoDeSaida);
 
-		return options;
-	}
+    var opcaoModoVerboso = new Option("v", "verbose", false,
+        "Habilita modo verboso.");
+    options.addOption(opcaoModoVerboso);
+    return options;
+  }
 
-	private CommandLine parseDosArgumentos(String[] args, Options options) {
-		CommandLineParser cmdParser = new DefaultParser();
-		var ajuda = new HelpFormatter();
-		CommandLine cmd;
+  private CommandLine parseDosArgumentos(String[] args, Options options) {
+    CommandLineParser cmdParser = new DefaultParser();
+    var ajuda = new HelpFormatter();
+    CommandLine cmd;
 
-		try {
-			cmd = cmdParser.parse(options, args);
-		} catch (ParseException e) {
-			ajuda.printHelp("cotuba", options);
+    try {
+      cmd = cmdParser.parse(options, args);
+    } catch (ParseException e) {
+      ajuda.printHelp("cotuba", options);
+      throw new IllegalArgumentException("Opção inválida", e);
+    }
+    return cmd;
+  }
 
-			throw new IllegalArgumentException("Opção invalida", e);
-		}
+  private void trataDiretorioDosMD(CommandLine cmd) {
+    String nomeDoDiretorioDosMD = cmd.getOptionValue("dir");
+    if (nomeDoDiretorioDosMD != null) {
+      diretorioDosMD = Paths.get(nomeDoDiretorioDosMD);
+      if (!Files.isDirectory(diretorioDosMD)) {
+        throw new IllegalArgumentException(nomeDoDiretorioDosMD + " não é um diretório.");
+      }
+    } else {
+      Path diretorioAtual = Paths.get("");
+      diretorioDosMD = diretorioAtual;
+    }
+  }
 
-		return cmd;
+  private void trataFormato(CommandLine cmd) {
+    String nomeDoFormatoDoEbook = cmd.getOptionValue("format");
+    if (nomeDoFormatoDoEbook != null) {
+      formato = FormatoEbook.valueOf(nomeDoFormatoDoEbook.toUpperCase());;
+    } else {
+      formato = FormatoEbook.PDF;
+    }
+  }
 
-	}
+  private void trataArquivoDeSaida(CommandLine cmd) {
+    try {
+      String nomeDoArquivoDeSaidaDoEbook = cmd.getOptionValue("output");
+      if (nomeDoArquivoDeSaidaDoEbook != null) {
+        arquivoDeSaida = Paths.get(nomeDoArquivoDeSaidaDoEbook);
+      } else {
+        arquivoDeSaida = Paths.get("book." + formato.name().toLowerCase());
+      }
+      if (Files.isDirectory(arquivoDeSaida)) {
+        // deleta arquivos do diretório recursivamente
+        Files.walk(arquivoDeSaida).sorted(Comparator.reverseOrder())
+            .map(Path::toFile).forEach(File::delete);
+      } else {
+        Files.deleteIfExists(arquivoDeSaida);
+      }
+    } catch (IOException ex) {
+      throw new IllegalArgumentException(ex);
+    }
+  }
 
-	private void trataDiretoriosDosMD(CommandLine cmd) {
+  private void trataModoVerboso(CommandLine cmd) {
+    modoVerboso = cmd.hasOption("verbose");
+  }
 
-		String nomeDoDiretorioDosMD = cmd.getOptionValue("dir");
+  public Path getDiretorioDosMD() {
+    return diretorioDosMD;
+  }
 
-		if (nomeDoDiretorioDosMD != null) {
-			diretorioDosMD = Paths.get(nomeDoDiretorioDosMD);
-			if (!Files.isDirectory(diretorioDosMD)) {
-				throw new IllegalArgumentException(nomeDoDiretorioDosMD + " não é um diretório.");
-			}
-		} else {
-			Path diretorioAtual = Paths.get("");
-			diretorioDosMD = diretorioAtual;
-		}
-	}
+  public FormatoEbook getFormato() {
+    return formato;
+  }
 
-	private void trataFormato(CommandLine cmd) {
+  public Path getArquivoDeSaida() {
+    return arquivoDeSaida;
+  }
 
-		String nomeDoFormatoDoEbook = cmd.getOptionValue("format");
-
-		if (nomeDoFormatoDoEbook != null) {
-			formato = nomeDoFormatoDoEbook.toLowerCase();
-		} else {
-			formato = "pdf";
-		}
-
-	}
-
-	private void trataArquivoDeSaida(CommandLine cmd) {
-		try {
-
-			String nomeDoArquivoDeSaidaDoEbook = cmd.getOptionValue("output");
-			if (nomeDoArquivoDeSaidaDoEbook != null) {
-				arquivoDeSaida = Paths.get(nomeDoArquivoDeSaidaDoEbook);
-			} else {
-				arquivoDeSaida = Paths.get("book." + formato.toLowerCase());
-			}
-
-			if (Files.isDirectory(arquivoDeSaida)) {
-				// deleta arquivos do diretório recursivamente
-				Files.walk(arquivoDeSaida).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-			} else {
-				Files.deleteIfExists(arquivoDeSaida);
-			}
-		} catch (IOException ex) {
-			throw new IllegalArgumentException(ex);
-		}
-	}
-
-	private void trataModoVerboso(CommandLine cmd) {
-
-		modoVerboso = cmd.hasOption("verbose");
-
-	}
-
-	// getters e setters
-
-	@Override
-	public Path getDiretorioDosMD() {
-		return diretorioDosMD;
-	}
-
-	@Override
-	public String getFormato() {
-		return formato;
-	}
-
-	@Override
-	public Path getArquivoDeSaida() {
-		return arquivoDeSaida;
-	}
-
-	@Override
-	public boolean isModoVerboso() {
-		return modoVerboso;
-	}
-
+  public boolean isModoVerboso() {
+    return modoVerboso;
+  }
 }
