@@ -1,9 +1,5 @@
 package cotuba.domain;
 
-
-/*
- * Classe criada no na pagina 47 para a implementação de domain model para geração de ebooks 
- */
 public class Capitulo {
 
   private String titulo;

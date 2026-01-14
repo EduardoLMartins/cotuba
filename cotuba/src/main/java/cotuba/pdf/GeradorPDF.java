@@ -16,12 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-/*
- * Classe criada apartir da pagina 30 para unificação de toda utilização do pacote com.itextpdf
- *  seguindo o SRP - Single Responsability Principle
- *
- */
-
 public class GeradorPDF implements GeradorEbook {
 
   @Override

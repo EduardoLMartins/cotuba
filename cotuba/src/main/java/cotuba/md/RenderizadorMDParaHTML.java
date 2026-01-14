@@ -16,11 +16,6 @@ import java.nio.file.PathMatcher;
 import java.util.List;
 import java.util.stream.Stream;
 
-/*
- * Classe criada apartir da pagina 40 seguindo SRP - Simple Responsability Principle 
- *  deixando assim para essa classe a a Renderização de MD para HTML
- */
-
 public class RenderizadorMDParaHTML {
 
   public List<Capitulo> renderiza(Path diretorioDosMD) {

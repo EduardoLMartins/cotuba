@@ -12,12 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/*
- *  * Classe criada apartir da pagina 34 para unificação de toda utilização dos pacote restantes e principalmente do pacote nl.siegmann.epublib
- *  que faz a criação dos epubs
- *  seguindo o SRP - Single Responsability Principle
- */
-
 public class GeradorEPUB implements GeradorEbook {
 
   @Override
