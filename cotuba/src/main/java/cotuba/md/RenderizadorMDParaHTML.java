@@ -30,12 +30,13 @@ public class RenderizadorMDParaHTML {
 
   public List<Path> obtemArquivosMD(Path diretorioDosMD) {
 
-    PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:**/*.md");
+    PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:*.md");
     try (Stream<Path> arquivosMD = Files.list(diretorioDosMD)) {
       return arquivosMD
-          .filter(matcher::matches)
-          .sorted()
-          .toList();
+              .filter(Files::isRegularFile)
+              .filter(matcher::matches)
+              .sorted()
+              .toList();
     } catch (IOException ex) {
       throw new IllegalStateException("Erro tentando encontrar arquivos .md em " + diretorioDosMD.toAbsolutePath(), ex);
     }
